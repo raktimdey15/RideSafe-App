@@ -1,0 +1,41 @@
+name: RideSafe
+description: A new Flutter project.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.1.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  # Core Features
+  flutter_blue_plus: ^1.15.0  # Bluetooth
+  permission_handler: ^11.0.0 # Permissions
+  url_launcher: ^6.1.12       # Calling
+  shared_preferences: ^2.2.2  # Saving contacts
+
+  # UI Beautification
+  flutter_animate: ^4.2.0     # Animations
+  google_fonts: ^6.1.0        # Nice fonts
+  cupertino_icons: ^1.0.2     # iOS style icons
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+  flutter_launcher_icons: ^0.13.1
+
+# --- CRITICAL SECTION: DO NOT CHANGE INDENTATION BELOW ---
+flutter:
+  uses-material-design: true  # <--- THIS LINE FIXES THE "X" ICONS
+
+  # Assets section (for your custom images)
+  # assets:
+  #   - assets/icon/
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icon/icon.png"
+  min_sdk_android: 21
