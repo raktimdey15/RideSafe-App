@@ -80,7 +80,7 @@ class _RideSafeHomeState extends State<RideSafeHome> with SingleTickerProviderSt
 
   Future<void> _initTTS() async {
     await flutterTts.setLanguage("en-US");
-    await flutterTts.setSpeechRate(0.55); // Slightly slower to sound authoritative
+    await flutterTts.setSpeechRate(0.55); // Slightly slower to sound authoritativ
     await flutterTts.setVolume(1.0);      // Max volume
     await flutterTts.setPitch(1.0);
   }
@@ -116,7 +116,7 @@ class _RideSafeHomeState extends State<RideSafeHome> with SingleTickerProviderSt
   Future<void> _loadNumbers() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
-      _policeController.text = prefs.getString('police_number') ?? "911";
+      _policeController.text = prefs.getString('police_number') ?? "999";
       _contactController.text = prefs.getString('emergency_contact') ?? "";
     });
   }
@@ -128,10 +128,9 @@ class _RideSafeHomeState extends State<RideSafeHome> with SingleTickerProviderSt
     _showSnack("Emergency Contacts Saved", const Color(0xFF00E676));
   }
 
-  // --- BLUETOOTH CLASSIC LOGIC ---
+  // Bluetooth classic er logic
 
   void _showDeviceList() async {
-    // Get list of paired devices (You must pair HC-06 in phone settings first)
     List<BluetoothDevice> devices = [];
     try {
       devices = await FlutterBluetoothSerial.instance.getBondedDevices();
@@ -221,7 +220,7 @@ class _RideSafeHomeState extends State<RideSafeHome> with SingleTickerProviderSt
       _dataBuffer = _dataBuffer.replaceAll("Emergency", "");
     }
 
-    // 2. Check for Alcohol
+    // Alcohol Check korbe
     if (_dataBuffer.contains("Alcohol")) {
       _speakAlert("WARNING! ALCOHOL DETECTED. PLEASE STOP THE VEHICLE IMMEDIATELY.");
       _showSnack("ALCOHOL DETECTED!", Colors.purpleAccent);
@@ -229,7 +228,7 @@ class _RideSafeHomeState extends State<RideSafeHome> with SingleTickerProviderSt
       _dataBuffer = _dataBuffer.replaceAll("Alcohol", "");
     }
 
-    // 3. Check for Drowsiness
+    // Drowsiness Detect Korbe
     if (_dataBuffer.contains("Drowsy")) {
       _speakAlert("WARNING! DROWSINESS DETECTED. WAKE UP AND PULL OVER.");
       _showSnack("DROWSINESS DETECTED!", Colors.orangeAccent);
@@ -237,7 +236,7 @@ class _RideSafeHomeState extends State<RideSafeHome> with SingleTickerProviderSt
       _dataBuffer = _dataBuffer.replaceAll("Drowsy", "");
     }
 
-    // 4. Check for the reset signal (-) to turn the UI cards back to green
+    // Alcohol+Drowsiness detect korbe
     if (_dataBuffer.contains("-")) {
       setState(() {
         isAlcoholDetected = false;
@@ -251,16 +250,13 @@ class _RideSafeHomeState extends State<RideSafeHome> with SingleTickerProviderSt
     }
   }
 
-  // --- EMERGENCY PROTOCOLS ---
+  // EMERGENCY PROTOCOLS
 
   void _triggerEmergencyProtocol() {
     _showSnack("SOS DETECTED! Engaging Emergency Protocols...", Colors.redAccent);
 
-    // 1. Start the phone call IMMEDIATELY. Notice there is no 'await' keyword here.
-    // This allows the app to dial the police instantly without waiting for the GPS.
     _makeCall();
 
-    // 2. Fetch location and open WhatsApp in parallel.
     _sendWhatsAppLocation();
   }
 
@@ -286,7 +282,7 @@ class _RideSafeHomeState extends State<RideSafeHome> with SingleTickerProviderSt
       }
       if (permission == LocationPermission.deniedForever) return;
 
-      // The app is now fetching coordinates while the phone is already dialing the police
+    
       Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
 
       // PERFECTED Google Maps Link
@@ -317,8 +313,7 @@ class _RideSafeHomeState extends State<RideSafeHome> with SingleTickerProviderSt
 
   void _showError(String msg) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg), backgroundColor: Colors.red));
   void _showSnack(String msg, Color color) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg), backgroundColor: color));
-
-  // --- UI RENDERING ---
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -390,7 +385,7 @@ class _RideSafeHomeState extends State<RideSafeHome> with SingleTickerProviderSt
 
               const SizedBox(height: 40),
 
-              // 2. Sensor Grid (Modern Glassmorphism look)
+    
               Row(
                 children: [
                   Expanded(child: _buildSensorCard("HELMET", isHelmetWorn, Icons.sports_motorsports, Colors.blue)),
